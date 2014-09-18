@@ -32,7 +32,7 @@
     <input type="text" value="{{input}}">
     <button on-click="{{send}}">send</button>
 
-    <native-client nmf="demo/hello_tutorial.nmf"
+    <native-client id="nacl" nmf="demo/hello_tutorial.nmf"
       on-load="{{onLoaded}}"
       on-message="{{receive}}">
     </native-client>
@@ -46,7 +46,7 @@
     demo.log = '';
 
     demo.onLoaded = function(e) {
-      log("NaCl module loaded");
+      log("NaCl module loaded from " + e.detail.url);
     };
 
     demo.receive = function(e) {
@@ -55,7 +55,8 @@
 
     demo.send = function() {
       log("Sending: " + demo.input);
-      document.querySelector('native-client').send(demo.input);
+      this.$.nacl.send(demo.input);
+      //document.querySelector('native-client').send(demo.input);
     };
 
     function log(msg) {
