@@ -14,11 +14,14 @@
   <title>native-client element demo</title>
 
   <script src="../platform/platform.js"></script>
-  <link rel="import" href="native-client.html">
+  <link rel="import" href="polynacl.html">
 
   <style>
     native-client::shadow embed {
       height: 0;
+    }
+    .logbox {
+      border-top: 1px solid rgba(0,0,0,0.25);
     }
   </style>
 
@@ -29,11 +32,14 @@
 
   <template id="demo" is="auto-binding">
 
-    <input type="text" value="{{input}}">
-    <button on-click="{{send}}">send</button>
+    <form on-submit="{{send}}">
+      <input type="text" value="{{input}}">
+      <button type="submit">send</button>
+      <div><small>(try "hello")</small></div>
+    </form>
 
     <native-client id="nacl"
-                   nmf="demo/hello_tutorial.nmf"
+                   nmf="nacl/hello_tutorial.nmf"
                    in="{{input}}"
                    out="{{output}}"
                    on-load="{{onLoaded}}"
@@ -45,8 +51,10 @@
       Receive: {{output}}
     </p>
 
-    <p>Log messages:</p>
-    <pre>{{log}}</pre>
+    <div class="logbox">
+      <p>Log messages:</p>
+      <pre>{{log}}</pre>
+    </div>
 
   </template>
 
@@ -62,7 +70,8 @@
       log("NaCl module says: " + e.data);
     };
 
-    demo.send = function() {
+    demo.send = function(e) {
+      e.preventDefault();
       log("Sending: " + demo.input);
       this.$.nacl.send(demo.input);
       //document.querySelector('native-client').send(demo.input);

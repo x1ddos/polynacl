@@ -10,15 +10,14 @@
 <link rel="import" href="../polymer/polymer.html">
 
 <!--
-This element embeds a Native Client (NaCl) extension on the page.
+This element embeds a Portable Native Client (PNaCl) extension on the page.
 
 ##### Example
 
     <native-client nmf="my_pnacl_manifest.nmf"></native-client>
 
 @element native-client
-@blurb Element that can embed Portable Native Client (PNaCl) extension
-       on the page.
+@blurb Element that can embed Portable Native Client (PNaCl) extension on the page.
 @status alpha
 @homepage http://github.com/crhym3/polymer-native-client
 -->
@@ -33,10 +32,55 @@ This element embeds a Native Client (NaCl) extension on the page.
 
   <script>
     Polymer({
+      /**
+       * Use `nmf` attribute to specify a URL or a data URL
+       * of the PNaCl module manifest.
+       *
+       * @attribute nmf
+       * @type string
+       */
+
+      /**
+       * You can pass messages to the PNaCl module using `in` attribute.
+       * The element will post the value to the module on every change.
+       *
+       * @attribute in
+       * @type string
+       */
+
+      /**
+       * Inbound messages from the PNaCl module can be received into
+       * `out` attribute.
+       *
+       * @attribute out
+       * @type string
+       */
+
+      /**
+       * Fired when PNaCl module is loaded.
+       *
+       * @event load
+       * @param {Object} detail
+       *   @param {string} detail.url The URL this module was loaded from.
+       */
+
+      /**
+       * Fired when PNaCl module sends a message to its host.
+       *
+       * @event message
+       * @param {Object|string} data Message payload.
+       */
+
       loaded: function(e) {
         this.fire('load', {url: e.url});
       },
 
+      /**
+       * Send a message to the NaCl module.
+       *
+       * @method send
+       * @param {Object|string} data Message payload.
+       */
       get send() {
         return this.$.nacl.postMessage.bind(this.$.nacl);
       },
