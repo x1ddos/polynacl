@@ -1,0 +1,19 @@
+{
+  "name": "polynacl",
+  "version": "0.0.1",
+  "description": "Element that can embed Portable Native Client (PNaCl) extension on the page.",
+  "keywords": "nacl, pnacl, native-client, polymer, web-components",
+  "main": "native-client.html",
+  "license": "MIT",
+  "homepage": "https://github.com/crhym3/polymer-native-client/",
+  "ignore": [
+    "**/.*",
+    "test",
+    "tests",
+    ".bowerrc"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#>=0.4.0 <1.0.0",
+    "polymer-test-tools": "Polymer/polymer-test-tools#>=0.4.0 <1.0.0"
+  }
+}

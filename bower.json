@@ -1,0 +1,7 @@
+{
+  "name": "polynacl#gh-pages",
+  "private": true,
+  "dependencies": {
+    "polynacl": "crhym3/polynacl#master"
+  }
+}

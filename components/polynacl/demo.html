@@ -1,0 +1,86 @@
+<!--
+    @license
+    Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+    This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+    The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+    The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+    Code distributed by Google as part of the polymer project is also
+    subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>native-client element demo</title>
+
+  <script src="../platform/platform.js"></script>
+  <link rel="import" href="polynacl.html">
+
+  <style>
+    native-client::shadow embed {
+      height: 0;
+    }
+    .logbox {
+      border-top: 1px solid rgba(0,0,0,0.25);
+    }
+  </style>
+
+</head>
+<body unresolved>
+
+  <p>An example of using <code>&lt;native-client&gt;</code>:</p>
+
+  <template id="demo" is="auto-binding">
+
+    <form on-submit="{{send}}">
+      <input type="text" value="{{input}}">
+      <button type="submit">send</button>
+      <div><small>(try "hello")</small></div>
+    </form>
+
+    <native-client id="nacl"
+                   nmf="nacl/hello_tutorial.nmf"
+                   in="{{input}}"
+                   out="{{output}}"
+                   on-load="{{onLoaded}}"
+                   on-message="{{receive}}">
+    </native-client>
+
+    <p>
+      Send: {{input}}<br/>
+      Receive: {{output}}
+    </p>
+
+    <div class="logbox">
+      <p>Log messages:</p>
+      <pre>{{log}}</pre>
+    </div>
+
+  </template>
+
+  <script>
+    var demo = document.querySelector('#demo');
+    demo.log = '';
+
+    demo.onLoaded = function(e) {
+      log("NaCl module loaded from " + e.detail.url);
+    };
+
+    demo.receive = function(e) {
+      log("NaCl module says: " + e.data);
+    };
+
+    demo.send = function(e) {
+      e.preventDefault();
+      log("Sending: " + demo.input);
+      this.$.nacl.send(demo.input);
+      //document.querySelector('native-client').send(demo.input);
+    };
+
+    function log(msg) {
+      demo.log += msg + "\n";
+    };
+  </script>
+</body>
+</html>
+
