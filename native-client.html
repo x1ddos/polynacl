@@ -1,0 +1,40 @@
+<!--
+    @license
+    Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+    This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+    The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+    The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+    Code distributed by Google as part of the polymer project is also
+    subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+This element embeds a Native Client (NaCl) extension on the page.
+
+##### Example
+
+    <native-client nmf="my_pnacl_manifest.nmf"></native-client>
+
+@element native-client
+@blurb Element that can embed Portable Native Client (PNaCl) extension on the page.
+@status alpha
+@homepage http://github.com/crhym3/polymer-native-client
+-->
+<polymer-element name="native-client" attributes="nmf">
+  <template>
+    <embed id="nacl" src="{{nmf}}" type="application/x-pnacl"/>
+    <content></content>
+  </template>
+
+  <script>
+    Polymer({
+      ready: function() { },
+
+      send: function(payload) {
+        this.$.nacl.postMessage(payload);
+      }
+    });
+  </script>
+</polymer-element>
+

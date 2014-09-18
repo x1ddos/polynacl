@@ -1,0 +1,67 @@
+<!--
+    @license
+    Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+    This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+    The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+    The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+    Code distributed by Google as part of the polymer project is also
+    subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>native-client element demo</title>
+
+  <script src="../platform/platform.js"></script>
+  <link rel="import" href="native-client.html">
+
+  <style>
+    native-client::shadow embed {
+      height: 0;
+    }
+  </style>
+
+</head>
+<body unresolved>
+
+  <p>An example of using <code>&lt;native-client&gt;</code>:</p>
+
+  <template id="demo" is="auto-binding">
+
+    <input type="text" value="{{input}}">
+    <button on-click="{{send}}">send</button>
+
+    <native-client nmf="demo/hello_tutorial.nmf"
+      on-load="{{onLoaded}}"
+      on-message="{{receive}}">
+    </native-client>
+
+    <pre>{{log}}</pre>
+
+  </template>
+
+  <script>
+    var demo = document.querySelector('#demo');
+    demo.log = '';
+
+    demo.onLoaded = function(e) {
+      log("NaCl module loaded");
+    };
+
+    demo.receive = function(e) {
+      log("NaCl module says: " + e.data);
+    };
+
+    demo.send = function() {
+      log("Sending: " + demo.input);
+      document.querySelector('native-client').send(demo.input);
+    };
+
+    function log(msg) {
+      demo.log += msg + "\n";
+    };
+  </script>
+</body>
+</html>
+
