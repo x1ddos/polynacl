@@ -17,22 +17,25 @@ This element embeds a Native Client (NaCl) extension on the page.
     <native-client nmf="my_pnacl_manifest.nmf"></native-client>
 
 @element native-client
-@blurb Element that can embed Portable Native Client (PNaCl) extension on the page.
+@blurb Element that can embed Portable Native Client (PNaCl) extension
+       on the page.
 @status alpha
 @homepage http://github.com/crhym3/polymer-native-client
 -->
 <polymer-element name="native-client" attributes="nmf">
   <template>
-    <embed id="nacl" src="{{nmf}}" type="application/x-pnacl"/>
+    <embed id="nacl" src="{{nmf}}" type="application/x-pnacl" on-load="{{loaded}}"/>
     <content></content>
   </template>
 
   <script>
     Polymer({
-      ready: function() { },
+      loaded: function(e) {
+        this.fire('load', {url: e.url});
+      },
 
-      send: function(payload) {
-        this.$.nacl.postMessage(payload);
+      get send() {
+        return this.$.nacl.postMessage.bind(this.$.nacl);
       }
     });
   </script>
