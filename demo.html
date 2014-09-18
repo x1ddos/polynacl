@@ -32,11 +32,20 @@
     <input type="text" value="{{input}}">
     <button on-click="{{send}}">send</button>
 
-    <native-client id="nacl" nmf="demo/hello_tutorial.nmf"
-      on-load="{{onLoaded}}"
-      on-message="{{receive}}">
+    <native-client id="nacl"
+                   nmf="demo/hello_tutorial.nmf"
+                   in="{{input}}"
+                   out="{{output}}"
+                   on-load="{{onLoaded}}"
+                   on-message="{{receive}}">
     </native-client>
 
+    <p>
+      Send: {{input}}<br/>
+      Receive: {{output}}
+    </p>
+
+    <p>Log messages:</p>
     <pre>{{log}}</pre>
 
   </template>

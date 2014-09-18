@@ -22,10 +22,13 @@ This element embeds a Native Client (NaCl) extension on the page.
 @status alpha
 @homepage http://github.com/crhym3/polymer-native-client
 -->
-<polymer-element name="native-client" attributes="nmf">
+<polymer-element name="native-client" attributes="nmf in out">
   <template>
-    <embed id="nacl" src="{{nmf}}" type="application/x-pnacl" on-load="{{loaded}}"/>
-    <content></content>
+    <embed id="nacl"
+           src="{{nmf}}"
+           type="application/x-pnacl"
+           on-load="{{loaded}}"
+           on-message="{{receive}}"/>
   </template>
 
   <script>
@@ -36,6 +39,14 @@ This element embeds a Native Client (NaCl) extension on the page.
 
       get send() {
         return this.$.nacl.postMessage.bind(this.$.nacl);
+      },
+
+      inChanged: function(oldval, newval) {
+        oldval !== undefined && this.send(newval);
+      },
+
+      receive: function(e) {
+        this.out = e.data;
       }
     });
   </script>
