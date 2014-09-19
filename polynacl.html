@@ -82,7 +82,10 @@ This element embeds a Portable Native Client (PNaCl) extension on the page.
        * @param {Object|string} data Message payload.
        */
       get send() {
-        return this.$.nacl.postMessage.bind(this.$.nacl);
+        if (!this._sendFn) {
+          this._sendFn = this.$.nacl.postMessage.bind(this.$.nacl);
+        }
+        return this._sendFn;
       },
 
       inChanged: function(oldval, newval) {
