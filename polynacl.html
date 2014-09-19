@@ -21,7 +21,7 @@ This element embeds a Portable Native Client (PNaCl) extension on the page.
 @status alpha
 @homepage http://github.com/crhym3/polymer-native-client
 -->
-<polymer-element name="native-client" attributes="nmf in out">
+<polymer-element name="native-client" attributes="nmf in out isReady">
   <template>
     <embed id="nacl"
            src="{{nmf}}"
@@ -71,7 +71,17 @@ This element embeds a Portable Native Client (PNaCl) extension on the page.
        * @param {Object|string} data Message payload.
        */
 
+      /**
+       * Indicates whether the NaCl module is fully loaded and ready.
+       * This is an alternative (to `load` event) way of monitoring module's status.
+       *
+       * @attribute isReady
+       * @type boolean
+       */
+      isReady: false,
+
       loaded: function(e) {
+        this.isReady = true;
         this.fire('load', {url: e.url});
       },
 

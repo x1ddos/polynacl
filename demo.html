@@ -33,13 +33,14 @@
   <template id="demo" is="auto-binding">
 
     <form on-submit="{{send}}">
-      <input type="text" value="{{input}}">
-      <button type="submit">send</button>
+      <input type="text" id="input" value="{{input}}">
+      <button type="submit" disabled?="{{!isReady}}">send</button>
       <div><small>(try "hello")</small></div>
     </form>
 
     <native-client id="nacl"
                    nmf="nacl/hello_tutorial.nmf"
+                   isReady="{{isReady}}"
                    in="{{input}}"
                    out="{{output}}"
                    on-load="{{onLoaded}}"
@@ -48,7 +49,8 @@
 
     <p>
       Send: {{input}}<br/>
-      Receive: {{output}}
+      Receive: {{output}}<br/>
+      Ready? {{isReady}}
     </p>
 
     <div class="logbox">
@@ -64,6 +66,7 @@
 
     demo.onLoaded = function(e) {
       log("NaCl module loaded from " + e.detail.url);
+      this.$.input.focus();
     };
 
     demo.receive = function(e) {
@@ -72,9 +75,12 @@
 
     demo.send = function(e) {
       e.preventDefault();
-      log("Sending: " + demo.input);
+      if (!this.isReady) {
+        log("PNaCl module is not ready yet.");
+        return;
+      }
+      log("Sending: " + this.input);
       this.$.nacl.send(demo.input);
-      //document.querySelector('native-client').send(demo.input);
     };
 
     function log(msg) {
