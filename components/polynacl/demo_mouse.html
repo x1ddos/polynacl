@@ -1,0 +1,129 @@
+<!--
+    @license
+    Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+    This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+    The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+    The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+    Code distributed by Google as part of the polymer project is also
+    subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>Mouse Cursor PNaCl demo</title>
+
+  <script src="../platform/platform.js"></script>
+  <link rel="import" href="polynacl.html">
+
+  <style>
+    native-client {
+      display: block;
+      margin-top: 20px;
+    }
+    native-client::shadow embed {
+      width: 400px;
+      height: 400px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body unresolved>
+  <h1>Mouse Cursor</h1>
+  <p>
+    This example shows how to change the mouse cursor. Move the mouse over
+    the box below to see the mouse pointer change.
+  </p>
+  <p>
+    <em>hint: to see all of the cursors quickly, click on the select box, and
+      use the keyboard to change the current selection.</em>
+  </p>
+
+  <template id="demo" is="auto-binding">
+    <h2>Status: <code>{{status}}</code></h2>
+
+    <label>Cursor Type:</label>
+    <select id="select" on-change="{{changeCursor}}" disabled?="{{!isReady}}">
+      <option value="-1">PP_MOUSECURSOR_TYPE_CUSTOM</option>
+      <option value="0">PP_MOUSECURSOR_TYPE_POINTER</option>
+      <option value="1">PP_MOUSECURSOR_TYPE_CROSS</option>
+      <option value="2">PP_MOUSECURSOR_TYPE_HAND</option>
+      <option value="3">PP_MOUSECURSOR_TYPE_IBEAM</option>
+      <option value="4">PP_MOUSECURSOR_TYPE_WAIT</option>
+      <option value="5">PP_MOUSECURSOR_TYPE_HELP</option>
+      <option value="6">PP_MOUSECURSOR_TYPE_EASTRESIZE</option>
+      <option value="7">PP_MOUSECURSOR_TYPE_NORTHRESIZE</option>
+      <option value="8">PP_MOUSECURSOR_TYPE_NORTHEASTRESIZE</option>
+      <option value="9">PP_MOUSECURSOR_TYPE_NORTHWESTRESIZE</option>
+      <option value="10">PP_MOUSECURSOR_TYPE_SOUTHRESIZE</option>
+      <option value="11">PP_MOUSECURSOR_TYPE_SOUTHEASTRESIZE</option>
+      <option value="12">PP_MOUSECURSOR_TYPE_SOUTHWESTRESIZE</option>
+      <option value="13">PP_MOUSECURSOR_TYPE_WESTRESIZE</option>
+      <option value="14">PP_MOUSECURSOR_TYPE_NORTHSOUTHRESIZE</option>
+      <option value="15">PP_MOUSECURSOR_TYPE_EASTWESTRESIZE</option>
+      <option value="16">PP_MOUSECURSOR_TYPE_NORTHEASTSOUTHWESTRESIZE</option>
+      <option value="17">PP_MOUSECURSOR_TYPE_NORTHWESTSOUTHEASTRESIZE</option>
+      <option value="18">PP_MOUSECURSOR_TYPE_COLUMNRESIZE</option>
+      <option value="19">PP_MOUSECURSOR_TYPE_ROWRESIZE</option>
+      <option value="20">PP_MOUSECURSOR_TYPE_MIDDLEPANNING</option>
+      <option value="21">PP_MOUSECURSOR_TYPE_EASTPANNING</option>
+      <option value="22">PP_MOUSECURSOR_TYPE_NORTHPANNING</option>
+      <option value="23">PP_MOUSECURSOR_TYPE_NORTHEASTPANNING</option>
+      <option value="24">PP_MOUSECURSOR_TYPE_NORTHWESTPANNING</option>
+      <option value="25">PP_MOUSECURSOR_TYPE_SOUTHPANNING</option>
+      <option value="26">PP_MOUSECURSOR_TYPE_SOUTHEASTPANNING</option>
+      <option value="27">PP_MOUSECURSOR_TYPE_SOUTHWESTPANNING</option>
+      <option value="28">PP_MOUSECURSOR_TYPE_WESTPANNING</option>
+      <option value="29">PP_MOUSECURSOR_TYPE_MOVE</option>
+      <option value="30">PP_MOUSECURSOR_TYPE_VERTICALTEXT</option>
+      <option value="31">PP_MOUSECURSOR_TYPE_CELL</option>
+      <option value="32">PP_MOUSECURSOR_TYPE_CONTEXTMENU</option>
+      <option value="33">PP_MOUSECURSOR_TYPE_ALIAS</option>
+      <option value="34">PP_MOUSECURSOR_TYPE_PROGRESS</option>
+      <option value="35">PP_MOUSECURSOR_TYPE_NODROP</option>
+      <option value="36">PP_MOUSECURSOR_TYPE_COPY</option>
+      <option value="37">PP_MOUSECURSOR_TYPE_NONE</option>
+      <option value="38">PP_MOUSECURSOR_TYPE_NOTALLOWED</option>
+      <option value="39">PP_MOUSECURSOR_TYPE_ZOOMIN</option>
+      <option value="40">PP_MOUSECURSOR_TYPE_ZOOMOUT</option>
+      <option value="41">PP_MOUSECURSOR_TYPE_GRAB</option>
+      <option value="42">PP_MOUSECURSOR_TYPE_GRABBING</option>
+    </select>
+
+    <native-client id="nacl"
+                   nmf="mouse_cursor/mouse_cursor.nmf"
+                   isReady="{{isReady}}"
+                   on-error="{{onError}}"
+                   on-load="{{onLoaded}}">
+    </native-client>
+
+  </template>
+
+  <script>
+    var demo = document.querySelector('#demo');
+
+    demo.onLoaded = function(e) {
+      this.status = "LOADED!";
+      console.log("PNaCl module loaded from " + e.detail.url);
+      this.$.select.focus();
+      this.changeCursor();
+    };
+
+    demo.onError = function(e) {
+      demo.status = "ERROR :(";
+      console.error("Error loading PNaCl module", e);
+    }
+
+    demo.changeCursor = function() {
+      if (!this.isReady) {
+        console.log("PNaCl module is not ready yet.");
+        return;
+      }
+      var ctype = parseInt(this.$.select.value);
+      console.log('Changing cursor to ' + ctype);
+      this.$.nacl.send(ctype);
+    };
+  </script>
+</body>
+</html>
+
